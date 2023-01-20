@@ -1,0 +1,54 @@
+﻿@page "/reservationInfo"
+@using HotelFinal.Client.Components
+@using Services;
+@using HotelFinal.Shared
+@inject HotelService service
+<h3>ReservationInfo</h3>
+
+<AuthorizeView Roles="Administrator">
+    <Authorized>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Guest</th>
+                    <th>Checkin date</th>
+                    <th>Checkout date</th>
+                    <th>Room Type</th>
+                    <th>Smoking</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var res in reservationroomList)
+                {
+                    <tr>
+                        <td>@res.Reservation.Guest.LastName</td>
+                        <td>@res.Reservation.ExpectedCheckin</td>
+                        <td>@res.Reservation.ExpectedCheckout</td>
+                        <td>@res.RoomType.RType</td>
+                        <td>@(res.RoomType.Smoking ? "Smoking" : "Non Smoking")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Authorized>
+    <NotAuthorized>
+        <NotAuthorizedAlert/>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    public List<Reservation> reservationList { get; set; } = new();
+    public List<ReservationRoom> reservationroomList { get; set; } = new();
+    public List<RoomType> roomtypeList { get; set; } = new();
+    public List<Guest> guestIds { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //reservationList = await service.GetAllReservationAsync();
+        reservationroomList = await service.GetAllReservationRoomAsync();
+        reservationroomList = reservationroomList.OrderBy(r => r.Reservation.ExpectedCheckin).ToList();
+        //roomtypeList = await service.GetAllRoomTypesAsync();
+        guestIds = await service.GetAllGuestAsync();
+    }
+
+}

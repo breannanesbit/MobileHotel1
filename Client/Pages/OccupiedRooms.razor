@@ -1,0 +1,43 @@
+﻿@page "/Occupiedrooms"
+@using HotelFinal.Client.Components
+@using HotelFinal.Client.Services;
+@using HotelFinal.Shared;
+@using Syncfusion.Blazor.Calendars
+@inject HotelService service
+
+<AuthorizeView Roles="Administrator">
+    <Authorized>
+        <h3>Occupied Rooms</h3>
+        <div class="row mb-2">
+            <div class="col-11 my-auto">
+                <SfDatePicker TValue="DateTime?" 
+                    @bind-Value=Date 
+                    Placeholder="Choose A Date" 
+                    Max="MaxDate"/>
+            </div>
+            <div class="col-1 btn btn-primary my-auto" @onclick=GetAvaibleRooms>
+                <i class="bi bi-search"></i>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAuthorizedAlert />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@foreach(var r in RoomOccupied)
+{
+    <li>Room @r.RoomCleaning.Room.RoomNumber</li>
+}
+
+@code {
+    public DateTime? Date { get; set; }
+    public List<RentalRoom> RoomOccupied { get; set; } = new();
+    public DateTime MaxDate { get; set; } = DateTime.Now;
+
+    protected async Task GetAvaibleRooms()
+    {
+        RoomOccupied = await service.GetOccupiedRooms(Date.Value);
+    }
+}

@@ -1,0 +1,69 @@
+﻿@page "/BookingReservation"
+@using HotelFinal.Shared;
+@using HotelFinal.Client.Services
+@using Syncfusion.Blazor.Calendars
+@using HotelFinal.Client.Components
+@inject HotelService hotelService
+@inject UserService userService
+@inject NavigationManager navManager;
+<h3>Find A Room</h3>
+
+<AuthorizeView Roles="Administrator, User">
+    <Authorized>
+        <div class="row mb-2">
+            <div class="col-11 my-auto">
+                <SfDateRangePicker TValue="DateTime?"
+                    Placeholder="How Long Are You Staying?"
+                    ShowClearButton="true"
+                    Min="today"
+                    @bind-StartDate=Checkin
+                    @bind-EndDate=Checkout />
+            </div>
+            <div class="col-1 btn btn-primary my-auto" @onclick=GetAvailableRoomTypes>
+                <i class="bi bi-search"></i>
+            </div>
+        </div>
+        @if (RoomTypes is not null)
+        {
+            @if (RoomTypes.Count != 0)
+            {
+                <div class="row" >
+                    @foreach (var type in RoomTypes)
+                    {
+                        <div class="col-lg-3 my-2">
+                            <RoomTypeCard RoomType=type>
+                                <ReservationButton 
+                                    Checkin="Checkin.Value" 
+                                    Checkout="Checkout.Value" 
+                                    RoomType="type"/>
+                            </RoomTypeCard>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {  
+                <div class="display-3 text-center">
+                    <p>😮Sorry, we don't have any rooms available. Please choose another date range.</p>
+                </div>
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        <NotAuthorizedAlert />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+@code {
+    public DateTime? Checkin { get; set; }
+    public DateTime? Checkout { get; set; }
+    public List<RoomType> RoomTypes { get; set; }
+    private readonly DateTime today = DateTime.Now;
+
+    public async Task GetAvailableRoomTypes()
+    {
+        RoomTypes = await hotelService.GetAvailableRoomTypesAsync(Checkin.Value, Checkout.Value);
+    }
+}

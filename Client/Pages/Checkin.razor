@@ -1,0 +1,132 @@
+﻿@page "/Checkin"
+@using HotelFinal.Client.Components;
+@using HotelFinal.Client.Services;
+@using HotelFinal.Shared;
+@inject HotelService hotelService
+@inject UserService userService
+<h3>Checkin</h3>
+
+<AuthorizeView Roles="Administrator, Staff">
+    <Authorized>
+        @if (!successfulCheckin)
+        {
+            <div class="alert alert-danger" role="alert">
+                <div class="row">
+                    <div class="col my-auto">
+                        A room has not been prepared for this reservation!
+                    </div>
+                    <div class="col text-end my-auto">
+                        <div class="btn btn-outline-danger bg-white"
+                        @onclick="() => successfulCheckin = true">
+                            <i class="bi bi-x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <CheckinAlert AlertStatus="alert"></CheckinAlert>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Guest</th>
+                    <th>Checkin date</th>
+                    <th>Checkout date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var res in Reservations)
+                {
+                    //var reser = reservationList.Find(res.Reservation);
+                    <tr>
+                        <td>@res.Guest.LastName</td>
+                        <td>@res.ExpectedCheckin</td>
+                        <td>@res.ExpectedCheckout</td>
+                        <td>
+                            <button class="btn btn-primary" 
+                            @onclick="() => CheckinGuest(res)">
+                                Checkin
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Authorized>
+    <NotAuthorized>
+        <NotAuthorizedAlert />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    public List<Reservation> Reservations { get; set; } = new();
+    public bool successfulCheckin { get; set; } = true;
+    private CheckinAlert.Alert alert = CheckinAlert.Alert.None;
+    private readonly DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+
+    protected override async Task OnInitializedAsync()
+    {
+        Reservations = await hotelService.AllReservationsWithoutRentals();
+    }
+
+    private async Task<bool> HasRental(int resId)
+    {
+        var rental = await hotelService.GetReservationRental(resId);
+
+        if (rental is null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public async Task CheckinGuest(Reservation reservation)
+    {
+        if (today >= reservation.ExpectedCheckin && today <= reservation.ExpectedCheckout)
+        {
+            Staff staff;
+            var userId = await userService.GetUserId();
+            var userEmail = await userService.GetUserEmail();
+            try
+            {
+                staff = await hotelService.GetStaffAsync(userId, userEmail);
+            }
+            catch
+            {
+                staff = new()
+                    {
+                        FirstName = userId,
+                        LastName = userEmail
+                    };
+
+                await hotelService.PostStaffAsync(staff);
+                staff = await hotelService.GetStaffAsync(userId, userEmail);
+            }
+
+            RentalCreationObject rco = new()
+                {
+                    Reservation = reservation,
+                    Staff = staff
+                };
+
+            if (!(await hotelService.CreateRentalAsync(rco)))
+            {
+                alert = CheckinAlert.Alert.UnpreparedRoom;
+            }
+            Reservations = await hotelService.AllReservationsWithoutRentals();
+        }
+        else
+        {
+            if (today < reservation.ExpectedCheckin)
+            {
+                alert = CheckinAlert.Alert.EarlyCheckinAttempt;
+            }
+            else
+            {
+                alert = CheckinAlert.Alert.LateCheckinAttempt;      
+            }
+        }
+    }
+}
