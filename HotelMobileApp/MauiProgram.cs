@@ -1,7 +1,7 @@
 ﻿using HotelMobileApp.ViewModel;
 using Microsoft.Extensions.Logging;
-using MoblieShared;
-using CommunityToolkit.Maui;
+using HotelFinal.Services;
+
 
 namespace HotelMobileApp
 {
@@ -18,15 +18,21 @@ namespace HotelMobileApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+          
+            
+          
+            //builder.UseMauiCommunityToolkit();
+            //builder.Services.AddHttpClient<PublicClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
 #if DEBUG
+            builder.Logging.AddDebug();
+
+#endif
             builder.Services.AddSingleton<HotelService>();
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<MainPage>();
-          
-            builder.UseMauiCommunityToolkit();
-            //builder.Services.AddHttpClient<PublicClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-#endif
-            //builder.Logging.AddDebug();
+            builder.Services.AddSingleton<PublicClient>();
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://local:7000") });
 
             return builder.Build();
         }
