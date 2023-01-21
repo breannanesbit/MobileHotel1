@@ -17,14 +17,27 @@ namespace HotelMobileApp.ViewModel
         {
             this.service = service;
         }
+        public string Working { get; set; }
 
         [ObservableProperty]
         private List<RoomType> room;
 
+        [ObservableProperty]
+        private DateTime selectedStartDate;
+
+        [ObservableProperty]
+        private DateTime selectedEndDate;
+
         [RelayCommand]
         private async Task GetAllRoomTypes()
         {
-            Room = await service.GetAllRoomTypesAsync();
+            Room = await service.GetAvailableRoomTypesAsync(selectedStartDate, selectedEndDate);
+        }
+
+        [RelayCommand]
+        private void Start()
+        {
+            Working= "working";
         }
 
     }
