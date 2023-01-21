@@ -6,22 +6,19 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
 		<OutputType Condition="'$(TargetFramework)' != 'net7.0'">Exe</OutputType>
-		<RootNamespace>HotelMobileApp</RootNamespace>
+		<RootNamespace>MauiTesting</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
 
-     <WindowsAppSdkDeploymentManagerInitialize>false</WindowsAppSdkDeploymentManagerInitialize> 
+    <WindowsAppSdkDeploymentManagerInitialize>false</WindowsAppSdkDeploymentManagerInitialize>
     
 		<!-- Display name -->
-		<ApplicationTitle>HotelMobileApp</ApplicationTitle>
+		<ApplicationTitle>MauiTesting</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.hotelmobileapp</ApplicationId>
-		<ApplicationIdGuid>8c76a732-65e3-4a7c-88bc-900bbc15b546</ApplicationIdGuid>
-    
-   
+		<ApplicationId>com.companyname.mauitesting</ApplicationId>
+		<ApplicationIdGuid>99e58e88-d92c-4db0-b492-2bd8cd4566fc</ApplicationIdGuid>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -54,13 +51,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MoblieShared\MoblieShared.csproj" />
+	  <Folder Include="NewFolder\" />
 	</ItemGroup>
 
 </Project>

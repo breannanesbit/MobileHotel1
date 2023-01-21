@@ -12,7 +12,7 @@ namespace HotelMobileApp.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
-        private readonly HotelService service;
+         private readonly HotelService service;
         public MainViewModel(HotelService service)
         {
             this.service = service;
