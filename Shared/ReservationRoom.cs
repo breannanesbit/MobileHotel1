@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 namespace HotelFinal.Shared;
-
 public partial class ReservationRoom
 {
     public int Id { get; set; }

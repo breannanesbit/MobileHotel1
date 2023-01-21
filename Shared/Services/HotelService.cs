@@ -6,7 +6,7 @@ using System.Collections;
 using System.Net.Http.Json;
 using System.Runtime.InteropServices;
 
-namespace MoblieShared
+namespace HotelFinal.Services
 {
     public class HotelService
     {

@@ -29,7 +29,9 @@
                 HorizontalOptions="Center" />
 
     
+
             <!-- <Picker Title="Select a monkey" 
+
                      ItemsSource="{Binding Room}" 
                      ItemDisplayBinding="{Binding Room.RType}" />-->
             

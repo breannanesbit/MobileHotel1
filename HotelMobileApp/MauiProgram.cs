@@ -1,6 +1,9 @@
 ﻿using HotelMobileApp.ViewModel;
 using Microsoft.Extensions.Logging;
-using MoblieShared;
+
+using HotelFinal.Services;
+
+
 
 namespace HotelMobileApp
 {
@@ -17,14 +20,16 @@ namespace HotelMobileApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddSingleton<HotelService>();
-            builder.Services.AddSingleton<MainViewModel>();
-            builder.Services.AddSingleton<MainPage>();
-           
-
 
 #if DEBUG
             builder.Logging.AddDebug();
+
+#endif
+            builder.Services.AddSingleton<HotelService>();
+            builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<PublicClient>();
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://local:7000") });
 
 
             return builder.Build();

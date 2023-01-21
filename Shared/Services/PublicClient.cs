@@ -1,4 +1,4 @@
-﻿namespace MoblieShared
+﻿namespace HotelFinal.Services
 {
     public class PublicClient
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 
-namespace HotelFinal.Client.Services
+namespace HotelFinal.Services
 {
     public class UserService
     {
