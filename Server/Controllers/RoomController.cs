@@ -9,7 +9,7 @@ namespace HotelFinal.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    
     public class RoomController : ControllerBase
     {
         private readonly HotelContext hotelContext;

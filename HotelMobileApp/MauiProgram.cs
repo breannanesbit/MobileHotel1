@@ -30,10 +30,12 @@ namespace HotelMobileApp
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<PublicClient>();
             builder.UseMauiCommunityToolkit();
-            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://local:7000") });
+            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7000") });
 
-            builder.Services.AddHttpClient("ServerAPI",
-            client => client.BaseAddress = new Uri(Preferences.Get("ServerAPIBaseAddress", "https://local:7000")));
+            builder.Services.AddHttpClient<HotelService>(client => client.BaseAddress = new Uri("https://localhost:7080"));
+
+            /*builder.Services.AddHttpClient("https",
+            client => client.BaseAddress = new Uri(Preferences.Get("HotelFinal.ServerBaseAddress", "https://localhost:7000")));*/
 
             return builder.Build();
         }
