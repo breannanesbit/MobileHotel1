@@ -21,13 +21,13 @@
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Hello, World!"
+                Text="Hello, Travels! Thank you for picking our hotel"
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="32"
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Welcome to .NET Multi-platform App UI"
+                Text="pick the start and end date that you will be staying with us and we will display what avaiable room types we have"
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 FontSize="18"
@@ -60,6 +60,17 @@
                      ItemDisplayBinding="{Binding Room.RType}" 
                     HorizontalOptions="Center"
                     />-->
+
+            <!--<ListView 
+                ItemsSource="{Binding Room}"
+                />-->
+
+            <Label
+                Text="{Binding Roomtype}"
+                SemanticProperties.HeadingLevel="Level2"
+                FontSize="20"
+                HorizontalOptions="Center"
+                />
 
 
 

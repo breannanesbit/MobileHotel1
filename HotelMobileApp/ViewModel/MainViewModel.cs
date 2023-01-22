@@ -12,15 +12,19 @@ namespace HotelMobileApp.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
-         private readonly HotelService service;
+        private readonly HotelService service;
+        public string Roomtype { get; set; }
         public MainViewModel(HotelService service)
         {
             this.service = service;
+            Roomtype = "(pick your dates)";
         }
         public string Working { get; set; }
 
-        [ObservableProperty]
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(Roomtype))]
         private List<RoomType> room;
+
+  
 
         [ObservableProperty]
         private DateTime selectedStartDate;
@@ -28,10 +32,12 @@ namespace HotelMobileApp.ViewModel
         [ObservableProperty]
         private DateTime selectedEndDate;
 
+
         [RelayCommand]
         private async Task GetAllRoomTypes()
         {
             Room = await service.GetAvailableRoomTypesAsync(selectedStartDate, selectedEndDate);
+            Roomtype = Room[0].RType;
         }
 
         [RelayCommand]
