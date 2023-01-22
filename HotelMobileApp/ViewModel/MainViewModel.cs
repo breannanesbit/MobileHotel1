@@ -34,7 +34,7 @@ namespace HotelMobileApp.ViewModel
 
 
         [RelayCommand]
-        private async Task GetAllRoomTypes()
+        public async Task GetAllRoomTypes()
         {
             Room = await service.GetAvailableRoomTypesAsync(selectedStartDate, selectedEndDate);
             Roomtype = Room[0].RType;
